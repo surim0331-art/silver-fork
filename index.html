@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SILVER FORK | Editorial Portfolio</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Nanum+Myeongjo:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & Babel for Standalone -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .font-mae { font-family: 'Gamja Flower', cursive; letter-spacing: -0.01em; }
+        .font-serif { font-family: 'Nanum Myeongjo', serif; }
+        .font-editorial { font-family: 'Playfair Display', serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .mae-text-shadow { text-shadow: 0px 1px 3px rgba(0,0,0,0.5); }
+        .vertical-text { writing-mode: vertical-rl; }
+        .scroll-down-animate { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        body { background-color: #0a0a0a; margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Simple Icon Component for Standalone
+        const Icon = ({ name, size = 24, className = "" }) => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [name]);
+            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
+        };
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('magazine'); 
+            const [selectedLogId, setSelectedLogId] = useState(1);
+
+            const profileData = [
+                {
+                    id: 'initial', label: '11세: 조우 (The Encounter)',
+                    bouchee: { title: "Bouchee Hopkins", subtitle: "11세 | 후플푸프 | 혼혈", desc: "어머니의 규칙 아래 자란 강박적 소년. 타인에게 보이는 호의는 거래를 위한 본능적인 강박에 가깝습니다. 정중함 속에 숨겨진 서늘한 계산.", traits: ["정중함", "본능적", "강박적"], etc: "비행기 계단 17개, 10세용 구구단 문제지, 바뀐 치약 맛." },
+                    mae: { title: "Mae Cordel Vale", subtitle: "11세 | 슬리데린 | 머글본", desc: "할머니의 다리 뒤에 숨어버리는 게 가장 익숙한 아이. 대답조차 제대로 못 하는 미숙함. 익숙하지 않은 마법 세계에서 쪼그라든 채 유사 보호자를 찾아 헤맵니다.", traits: ["미숙", "수축", "자아위탁"], etc: "헝클어진 검녹빛 머리, 울보, 스코틀랜드 애버딘 출신." }
+                },
+                {
+                    id: 'early_growth', label: '14세: 결핍 (The Deprivation)',
+                    bouchee: { title: "The Observer", subtitle: "14세 | 호그와트 4학년", desc: "방학마다 빈민가를 도는 아버지를 보며 '무가치한 자비'에 대해 고찰합니다. 효율적이지 못한 감정 소모를 경멸하며, 주변 아이들을 자신의 논리 안에 두기 시작합니다.", traits: ["관찰자", "회의감", "조기 성숙"], etc: "딱딱한 빵 덩어리, 곰팡이 냄새나는 오두막, 재정 분석." },
+                    mae: { title: "The Dependent", subtitle: "14세 | 호그와트 4학년", desc: "유일한 보호자였던 할머니의 죽음. 고독에 대한 극심한 공포가 시작됩니다. 마법 세계에 붙어 있기 위해 스스로를 깎아내며 자발적인 '을'의 위치를 자처합니다.", traits: ["자발적 을", "자존심 무", "유기 공포"], etc: "외로운 장례식, 호구라 불리는 일상, 비굴한 미소." }
+                },
+                {
+                    id: 'late_growth', label: '17세: 정립 (The Formation)',
+                    bouchee: { title: "The Strategist", subtitle: "17세 | 호그와트 7학년", desc: "빈민가에서 두들겨 맞으며 '고통의 가치'를 깨닫고 깔깔 웃던 소년. [Tuao]의 사업 모델을 구상하며, 감정을 배제한 철저한 자본주의적 인간으로 탈바꿈합니다.", traits: ["사업가", "비정상적 희열", "데이터 중심"], etc: "부서진 오두막 문, 빈민가 노동력, 투자 제안서." },
+                    mae: { title: "The Facade", subtitle: "17세 | 호그와트 7학년", desc: "겉으로는 평범한 사람 흉내를 내지만 속은 불안감으로 썩어가는 상태. 졸업 후 갈 곳이 없다는 공포에 붓세의 곁을 맴돌며 그가 내미는 모든 조건을 수용합니다.", traits: ["표면적 무난함", "과잉 의존", "정서적 불안"], etc: "졸업에 대한 공포, 약속을 갈구하는 손, 미성장한 내면." }
+                },
+                {
+                    id: 'final', label: '28세: 종막 (The Asset)',
+                    bouchee: { title: "The Investor", subtitle: "28세 | 죽음을 먹는 자 | 금융기관 영업직", desc: "전쟁을 최대의 기회로 여긴 승리자. 아버지를 밀고하여 자신의 가치관을 증명했습니다. 마에를 '사랑'이 아닌 유지 관리해야 할 '고위험 고수익 자산'으로 취급합니다.", traits: ["INTJ", "투자자", "냉혈"], etc: "밀고된 아버지, 은색 포크의 규칙, 100%의 통제권." },
+                    mae: { title: "The Asset", subtitle: "28세 | 불사조 기사단(패배자) | 펍 서버", desc: "전쟁에서 패배하고 모든 자존감이 파괴된 자. 붓세의 통제된 온실 속에서만 숨을 쉴 수 있습니다. 그에게 매달려 확인받고 싶어 하는 가련하고 성가신 찡찡이.", traits: ["INFP", "애정결핍", "추락한 자산"], etc: "151cm의 작은 체구, 붓세의 코트 끝자락, 온실 속의 고립." }
+                }
+            ];
+
+            const logs = [
+                {
+                    id: 1, title: "Log #16: 방관과 갈구", status: "High Instability",
+                    messages: [
+                        { sender: 'mae', time: '03:10 PM', text: "나 오늘 하루 종일 아무것도 안 먹었어. 배고파서 죽을 것 같아.", sub: "(I haven't eaten anything all day. I feel like I'm going to die of hunger.)" },
+                        { sender: 'bouchee', time: '03:45 PM', text: "(읽음)", sub: "" },
+                        { sender: 'mae', time: '04:00 PM', text: "너 진짜 너무하다. 내가 굶어 죽어도 그냥 보고만 있을 거지? 넌 내가 뭘 하든 관심도 없지?", sub: "(You're really too much. You'd just watch me starve to death, wouldn't you? You don't care what I do, do you?)" },
+                        { sender: 'bouchee', time: '04:05 PM', text: "아니, 보고 있어. 네가 언제까지 굶을지, 아니면 언제 포기하고 음식을 찾을지 궁금해서.", sub: "(No, I'm watching. I'm curious how long you'll starve, or when you'll give up and look for food.)" },
+                        { sender: 'mae', time: '04:06 PM', text: "...나 그냥 죽어버릴까 봐.", sub: "(...Maybe I should just die.)" },
+                        { sender: 'bouchee', time: '04:08 PM', text: "그것도 네 선택이지. 난 네가 어떤 결말을 고르든 방해할 생각 없어. 그저 그 과정을 기록할 뿐이야.", sub: "(That's your choice too. I have no intention of interfering with whatever ending you choose. I'm just recording the process.)" },
+                    ]
+                },
+                {
+                    id: 2, title: "Log #05: 비 오는 날의 변수", status: "Observation Required",
+                    messages: [
+                        { sender: 'mae', time: '06:30 PM', text: "갑자기 비 온다. 나 우산 없는데.", sub: "(It’s suddenly raining. I don’t have an umbrella.)" },
+                        { sender: 'mae', time: '06:32 PM', text: "너 퇴근했어? 혹시 이 근처면 데리러 와주면 안 돼?", sub: "(Did you get off work? If you’re nearby, could you pick me up?)" },
+                        { sender: 'bouchee', time: '06:35 PM', text: "미안, 나 지금 분석할 서류가 좀 남았어. 택시 불러줄게.", sub: "(Sorry, I have some documents left to analyze. I'll call a taxi for you.)" },
+                        { sender: 'mae', time: '06:36 PM', text: "택시 타기 싫어. 비 오는 거 무섭단 말이야. 그냥 너랑 같이 차 타고 가고 싶어.", sub: "(I don’t want to take a taxi. Rain is scary. I just want to go in a car with you.)" },
+                        { sender: 'bouchee', time: '06:40 PM', text: "비가 무서운 게 아니라, 네가 나를 테스트하고 싶은 거겠지. 내가 일보다 너를 우선순위에 두는지.", sub: "(It’s not the rain you’re scared of; you probably want to test me. To see if I prioritize you over work.)" },
+                        { sender: 'mae', time: '06:41 PM', text: "...그거 아니야.", sub: "(...It’s not that.)" },
+                        { sender: 'bouchee', time: '06:43 PM', text: "택시 번호 보냈어. 젖지 말고 타고 가. 내일 저녁에 보자.", sub: "(Sent the taxi info. Get in without getting wet. See you tomorrow evening.)" },
+                    ]
+                }
+            ];
+
+            const currentLog = logs.find(l => l.id === selectedLogId);
+
+            return (
+                <div className="min-h-screen text-white font-sans selection:bg-emerald-500 selection:text-black bg-[#0a0a0a]">
+                    {/* Decoration */}
+                    <div className="fixed inset-0 pointer-events-none opacity-5 overflow-hidden z-0">
+                        <div className="absolute top-0 left-0 w-full h-full grid grid-cols-12 divide-x divide-emerald-900/40">
+                            {[...Array(12)].map((_, i) => <div key={i} />)}
+                        </div>
+                    </div>
+
+                    {/* Header */}
+                    <header className="relative z-40 pt-16 pb-12 px-8 text-center bg-black/80 backdrop-blur-md border-b border-white/5">
+                        <h1 className="text-5xl md:text-7xl font-serif tracking-tighter mb-4">
+                            SILVER <span className="text-emerald-500 italic text-6xl md:text-8xl">FORK</span>
+                        </h1>
+                        <nav className="flex justify-center flex-wrap gap-4 md:gap-8 mt-8">
+                            <button onClick={() => setActiveTab('magazine')} className={`flex items-center gap-2 px-4 py-2 text-[10px] md:text-xs tracking-[0.2em] transition-all ${activeTab === 'magazine' ? 'text-emerald-500 border-b border-emerald-500' : 'text-white/30 hover:text-white/60'}`}><Icon name="layout" size={14} /> EDITORIAL</button>
+                            <button onClick={() => setActiveTab('profiles')} className={`flex items-center gap-2 px-4 py-2 text-[10px] md:text-xs tracking-[0.2em] transition-all ${activeTab === 'profiles' ? 'text-emerald-500 border-b border-emerald-500' : 'text-white/30 hover:text-white/60'}`}><Icon name="book-open" size={14} /> PROFILES</button>
+                            <button onClick={() => setActiveTab('logs')} className={`flex items-center gap-2 px-4 py-2 text-[10px] md:text-xs tracking-[0.2em] transition-all ${activeTab === 'logs' ? 'text-emerald-500 border-b border-emerald-500' : 'text-white/30 hover:text-white/60'}`}><Icon name="message-square" size={14} /> LOGS</button>
+                        </nav>
+                    </header>
+
+                    <main className="relative z-10">
+                        {activeTab === 'magazine' && (
+                            <div className="p-4 md:p-12 max-w-[1400px] mx-auto min-h-screen animate-in fade-in">
+                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start mb-32">
+                                    <div className="md:col-span-12 mb-16 border-b border-white/10 pb-12 flex flex-col md:flex-row justify-between items-end gap-8">
+                                        <div className="max-w-2xl">
+                                            <h2 className="text-6xl md:text-8xl font-editorial leading-none tracking-tighter mb-6">THE EXCEPTIONAL <br /><span className="text-emerald-500 italic">STAGNATION</span></h2>
+                                            <p className="text-zinc-500 font-serif text-lg leading-relaxed border-l-2 border-emerald-500 pl-6">붓세 홉킨스는 모든 것의 성장을 지켜보고 폐기하지만, 오직 단 한 권의 책만은 결말을 내지 못한 채 서재에 꽂아두었습니다. 그것은 결코 평범해질 수 없는 '마에'라는 이름의 유일한 예외입니다.</p>
+                                        </div>
+                                        <div className="flex gap-4 md:flex-col items-end text-[10px] tracking-[0.4em] text-emerald-500/60 uppercase font-mono"><span>#Investor_Bouchee</span><span>#Menhera_Asset</span><span>#Daddy_Long_Legs</span></div>
+                                    </div>
+                                    <div className="md:col-span-7 grid grid-cols-2 gap-4">
+                                        <div className="col-span-2 aspect-video bg-zinc-900 border border-white/5 flex items-center justify-center relative overflow-hidden group">
+                                            <Icon name="camera" size={40} className="text-emerald-900/20" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                                            <div className="absolute bottom-8 left-8 right-8 text-sm font-mae text-zinc-300">"나를 여기 가두고, 나만 보는 거... 그거면 됐어. 평범해지지 않아도 된다고 해줘."</div>
+                                        </div>
+                                        <div className="aspect-[3/4] bg-zinc-900 border border-white/5 flex items-center justify-center relative"><Icon name="camera" size={30} className="text-emerald-900/20" /></div>
+                                        <div className="aspect-[3/4] bg-zinc-900 border border-white/5 flex items-center justify-center relative translate-y-8"><Icon name="camera" size={30} className="text-emerald-900/20" /></div>
+                                    </div>
+                                    <div className="md:col-span-5 space-y-12 pl-0 md:pl-12">
+                                        <div className="space-y-6 border-t border-white/5 pt-8">
+                                            <h3 className="text-3xl font-editorial italic text-emerald-500">Observation: 정체라는 이름의 인정</h3>
+                                            <p className="text-sm text-zinc-400 font-serif leading-relaxed">붓세는 모든 기업과 인간을 '성장'이라는 잣대로 평가해왔습니다. 성장이 멈춘 것은 가치가 없으며 소모되어야 마땅한 것. 하지만 마에에게만은 예외의 법규를 적용합니다.</p>
+                                        </div>
+                                        <div className="bg-emerald-500/5 p-8 border border-emerald-500/20 relative"><p className="text-2xl font-editorial italic leading-snug">"성장하지 않는 것이 너의 유일한 가치라면, 나는 기꺼이 그 정체에 전 재산을 걸겠다."</p></div>
+                                    </div>
+                                </div>
+
+                                <div className="py-24 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                                    <div className="space-y-8">
+                                        <h3 className="text-5xl md:text-7xl font-editorial tracking-tighter">A PORTFOLIO OF <br /> <span className="italic text-emerald-500">HUMAN WASTE</span></h3>
+                                        <p className="font-serif text-zinc-400 leading-loose">붓세는 인간 쓰레기들을 모아 거대한 기업을 일구고, 그것이 정점에 달했을 때 가차 없이 버리는 취미를 가졌습니다. 하지만 마에는 상장폐지도 시키고 싶지 않은 아주 이상한 개인 소장품입니다.</p>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {[...Array(3)].map((_, i) => (
+                                                <div key={i} className="aspect-square bg-zinc-900/50 border border-white/5 flex items-center justify-center"><Icon name="camera" size={20} className="text-zinc-800" /></div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="aspect-[4/5] bg-zinc-900 border border-emerald-500/10 flex items-center justify-center relative overflow-hidden">
+                                        <Icon name="camera" size={60} className="text-emerald-900/10" />
+                                        <div className="absolute inset-x-0 bottom-0 p-12 bg-gradient-to-t from-black to-transparent">
+                                            <p className="text-2xl font-editorial italic text-white leading-tight">"성장하지 않는 것이 너의 유일한 가치라면, 나는 기꺼이 그 정체에 전 재산을 걸겠다."</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="py-24 grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div className="md:col-span-1 space-y-4">
+                                        <div className="aspect-[3/5] bg-zinc-900/30 border border-white/5 flex items-center justify-center"><Icon name="camera" size={24} className="text-zinc-800" /></div>
+                                    </div>
+                                    <div className="md:col-span-2 aspect-square bg-zinc-900 border border-white/5 flex items-center justify-center relative group">
+                                        <Icon name="camera" size={80} className="text-emerald-900/10" />
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center px-12">
+                                           <h4 className="text-6xl md:text-8xl font-mae text-white opacity-20 pointer-events-none select-none">망가진 관계에 대한 갈구</h4>
+                                        </div>
+                                    </div>
+                                    <div className="md:col-span-1 grid grid-rows-2 gap-4">
+                                        <div className="bg-zinc-950 border border-white/5 p-8 flex flex-col justify-end"><h5 className="text-xl font-editorial text-emerald-500 mb-2 italic">The Exception</h5></div>
+                                        <div className="aspect-square bg-zinc-900/20 border border-white/5 flex items-center justify-center"><Icon name="camera" size={30} className="text-zinc-800" /></div>
+                                    </div>
+                                </div>
+
+                                <div className="py-40 text-center space-y-12 border-t border-white/5">
+                                    <Icon name="arrow-down" size={24} className="mx-auto text-emerald-500 scroll-down-animate" />
+                                    <h2 className="text-5xl md:text-9xl font-editorial tracking-tighter uppercase leading-none">KIDNAPPED <br /><span className="italic text-emerald-500">GROWTH</span></h2>
+                                    <div className="flex justify-center flex-wrap gap-8 md:gap-16 font-serif text-sm md:text-lg text-emerald-500/80 tracking-[0.5em] uppercase border-t border-white/5 pt-12">
+                                        <span>#외면</span><span>#정체</span><span>#집착</span><span>#은색포크</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'profiles' && (
+                            <div className="animate-in fade-in duration-700">
+                                {profileData.map((phase, index) => (
+                                    <section key={phase.id} className="border-b border-white/5 overflow-hidden">
+                                        <div className="sticky top-[137px] z-30 bg-black/90 backdrop-blur-md border-y border-white/5 py-4 px-8 text-center"><span className="text-emerald-500 font-mono text-[10px] tracking-widest uppercase">Phase {index + 1}</span><h3 className="text-lg font-serif mt-1 tracking-tight text-zinc-400">{phase.label}</h3></div>
+                                        <div className="flex flex-col md:flex-row min-h-screen">
+                                            <article className="flex-1 p-8 md:p-16 border-r border-white/5 flex flex-col justify-center items-center md:items-start bg-gradient-to-br from-black to-zinc-900/10">
+                                                <div className="w-full max-w-lg space-y-8">
+                                                    <div className="w-full aspect-[3/4] bg-zinc-900 border border-emerald-900/30 flex items-center justify-center"><Icon name="camera" size={40} className="text-emerald-900/50" /></div>
+                                                    <div><h2 className="text-4xl md:text-5xl font-serif mb-2 text-white leading-tight">{phase.bouchee.title}</h2><p className="text-emerald-500 font-mono text-xs mb-6 uppercase tracking-tighter">{phase.bouchee.subtitle}</p><p className="border-l-2 border-emerald-500/30 pl-4 py-2 italic bg-emerald-500/5 text-zinc-200 leading-relaxed text-sm">{phase.bouchee.desc}</p></div>
+                                                </div>
+                                            </article>
+                                            <article className="flex-1 p-8 md:p-16 flex flex-col justify-center items-center md:items-start bg-[#050505]">
+                                                <div className="w-full max-w-lg space-y-8">
+                                                    <div className="w-full aspect-[3/4] bg-zinc-900/50 border border-white/5 flex items-center justify-center"><Icon name="camera" size={40} className="text-zinc-800" /></div>
+                                                    <div><h2 className="text-4xl md:text-5xl font-mae mb-2 text-zinc-100 leading-tight">{phase.mae.title}</h2><p className="text-emerald-500/60 font-mono text-xs mb-6 uppercase tracking-tighter">{phase.mae.subtitle}</p><p className="border-l-2 border-zinc-800 pl-4 py-1 text-zinc-200 text-xl leading-tight font-mae mae-text-shadow">{phase.mae.desc}</p></div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </section>
+                                ))}
+                            </div>
+                        )}
+
+                        {activeTab === 'logs' && (
+                            <div className="animate-in fade-in duration-700 max-w-6xl mx-auto py-12 px-4 md:px-8">
+                                <div className="flex flex-col lg:flex-row gap-8 bg-zinc-900/20 border border-white/5 rounded-xl overflow-hidden min-h-[700px]">
+                                    <aside className="w-full lg:w-72 border-r border-white/5 bg-black/40 p-6 flex flex-col gap-6">
+                                        <div className="flex items-center gap-2 text-emerald-500/80 mb-2 font-mono text-[10px] uppercase tracking-widest"><Icon name="database" size={16} /> Archive Logs</div>
+                                        <div className="space-y-2">
+                                            {logs.map(log => (<button key={log.id} onClick={() => setSelectedLogId(log.id)} className={`w-full text-left p-4 transition-all border ${selectedLogId === log.id ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500' : 'border-transparent text-white/40 hover:bg-white/5'}`}><div className="text-[10px] font-mono opacity-60 mb-1 tracking-tighter uppercase">00{log.id}_RECORD</div><div className="text-sm font-serif truncate">{log.title}</div></button>))}
+                                        </div>
+                                    </aside>
+                                    <section className="flex-1 p-6 md:p-12 flex flex-col items-center justify-center bg-gradient-to-b from-transparent to-black/30">
+                                        <div className="w-full max-w-md bg-zinc-950 border border-white/10 rounded-[2.5rem] p-6 shadow-2xl relative overflow-hidden">
+                                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl border-x border-b border-white/5 z-20"></div>
+                                            <div className="mt-8 h-[500px] overflow-y-auto scrollbar-hide flex flex-col gap-6 pb-4">
+                                                {currentLog?.messages.map((msg, i) => (
+                                                    <div key={i} className={`flex flex-col ${msg.sender === 'bouchee' ? 'items-start' : 'items-end'}`}>
+                                                        <div className={`max-w-[85%] p-4 rounded-2xl relative ${msg.sender === 'bouchee' ? 'bg-zinc-900 border border-emerald-500/20 text-zinc-300 rounded-tl-none' : 'bg-emerald-950/20 border border-zinc-700/50 text-zinc-100 font-mae text-lg rounded-tr-none mae-text-shadow leading-tight'}`}><p>{msg.text}</p></div>
+                                                        <span className="mt-1 text-[8px] text-white/20 font-mono">{msg.time}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    <footer className="relative z-50 border-t border-white/10 p-8 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.2em] text-white/30 gap-6 bg-black">
+                        <div>Asset Status: Exceptionally Static</div>
+                        <div className="font-serif italic text-white/20 text-center max-w-sm">"완벽해진 당신은 더 이상 나의 포트폴리오에 필요하지 않습니다."</div>
+                        <div className="flex gap-4 font-mono text-emerald-500/40"><span>INVESTOR: BOUCHEE</span><span>|</span><span>ASSET: MAE</span></div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
